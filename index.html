@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title> Evaluación Nutricional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Segoe UI,Arial;
+            background: #edf2f7;
+            padding: 30px
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0,0,0,.12)
+        }
+
+        h1 {
+            text-align: center;
+            color: #2b6cb0
+        }
+
+        fieldset {
+            border: none;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px
+        }
+
+        legend {
+            font-weight: bold;
+            color: #2b6cb0
+        }
+
+        label {
+            display: block;
+            margin: 6px 0
+        }
+
+        input[type=text], input[type=number], select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px
+        }
+
+        button {
+            background: #2b6cb0;
+            color: #fff;
+            border: none;
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px
+        }
+
+        .resultado {
+            background: #ebf8ff;
+            border-left: 6px solid #3182ce;
+            padding: 18px;
+            border-radius: 10px
+        }
+
+        .pantalla {
+            display: none
+        }
+
+            .pantalla.activa {
+                display: block
+            }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Evalucación Nutricional</h1>
+
+        <!-- PANTALLA DEL CUESTIONARIO 1-->
+        <div id="p1" class="pantalla activa">
+
+            <fieldset>
+                <legend>Datos del paciente</legend>
+                <label>Nombre <input type="text" id="nombre"></label>
+                <label>Apellidos <input type="text" id="apellidos"></label>
+                <label>Edad <input type="number" id="edad"></label>
+                <label>
+                    Sexo
+                    <select id="sexo">
+                        <option value="F">Femenino</option>
+                        <option value="M">Masculino</option>
+                    </select>
+                </label>
+                <label>Peso (kg) <input type="number" id="peso" step="0.1"></label>
+                <label>Altura (cm) <input type="number" id="altura"></label>
+            </fieldset>
+
+            <fieldset>
+                <legend>Cribaje (A–F)</legend>
+
+                <p><b>A. ¿Ha perdido el apetito? (Ha comido menos por falta de apetito, problemas digestivos, dificultades de masticación o deglución en los últimos 3 meses)</b></p>
+                <label><input type="radio" name="A" value="0"> 0 = Ha comido mucho menos</label>
+                <label><input type="radio" name="A" value="1"> 1 = Ha comido menos</label>
+                <label><input type="radio" name="A" value="2"> 2 = Ha comido igual</label>
+
+                <p><b>B. Pérdida de peso reciente (Menor a 3 meses)</b></p>
+                <label><input type="radio" name="B" value="0"> 0 = Pérdida de peso&gt;3 kg</label>
+                <label><input type="radio" name="B" value="1"> 1 = no lo sabe</label>
+                <label><input type="radio" name="B" value="2"> 2 = 1–3 kg</label>
+                <label><input type="radio" name="B" value="3"> 3 = No ha habido pérdida de peso</label>
+
+                <p><b>C. Movilidad</b></p>
+                <label><input type="radio" name="C" value="0"> De la cama al sillón</label>
+                <label><input type="radio" name="C" value="1"> Autonomía en el interior</label>
+                <label><input type="radio" name="C" value="2"> Sale del domicilio</label>
+
+                <p><b>D.Ha tenido una enfermedad aguda o situación de estrés psicológico en los últimos 3 meses? </b></p>
+                <label><input type="radio" name="D" value="0"> Sí</label>
+                <label><input type="radio" name="D" value="2"> No</label>
+
+                <p><b>E. Problemas neuropsicológicos</b></p>
+                <label><input type="radio" name="E" value="0"> Demencia o depresión grave</label>
+                <label><input type="radio" name="E" value="1"> Demencia leve</label>
+                <label><input type="radio" name="E" value="2"> Sin problemas psicológicas </label>
+
+                <p><b>F. IMC</b> Este apartado es generado automáticamente</p>
+
+                <button onclick="calcularCribaje()">Evaluar cribaje</button>
+            </fieldset>
+        </div>
+
+        <!-- PANTALLA DE RESULTADO DEL PRIMER CUESTIONARIO -->
+        <div id="p2" class="pantalla">
+            <div id="resCribaje" class="resultado"></div>
+            <button id="btnContinuar" onclick="mostrar('p3')">Continuar evaluación</button>
+            <button onclick="mostrar('p4')">Finalizar</button>
+        </div>
+
+        <!-- PANTALLA DE CUESTIONARIO 2 -->
+        <div id="p3" class="pantalla">
+            <fieldset>
+                <legend>Evaluación completa (G–R)</legend>
+
+                <p><b>G. ¿El paciente vive independiente en su domicilio? </b></p>
+                <label><input type="radio" name="G" value="1"> Sí</label>
+                <label><input type="radio" name="G" value="0"> No</label>
+
+                <p><b>H. ¿Toma más de 3 medicamentos al día?</b></p>
+                <label><input type="radio" name="H" value="0"> Sí</label>
+                <label><input type="radio" name="H" value="1"> No</label>
+
+                <p><b>I. ¿Úlceras o lesiones cutáneas?</b></p>
+                <label><input type="radio" name="I" value="0"> Sí</label>
+                <label><input type="radio" name="I" value="1"> No</label>
+
+                <p><b>J. ¿Cuántas comidas completas toma al día? </b></p>
+                <label><input type="radio" name="J" value="0"> 1</label>
+                <label><input type="radio" name="J" value="1"> 2</label>
+                <label><input type="radio" name="J" value="2"> 3</label>
+
+                <p><b>K. Consume el paciente...</b></p>
+                <label><input type="checkbox" id="k1"> Lácteos al menos una vez al día </label>
+                <label><input type="checkbox" id="k2"> Huevos o legumbres 1 o 2 veces a la semana</label>
+                <label><input type="checkbox" id="k3"> Carne, pescado o aves diariamente</label>
+
+                <p><b>L. ¿Consume frutas o verduras al menos 2 veces al día? </b></p>
+                <label><input type="radio" name="L" value="0"> No</label>
+                <label><input type="radio" name="L" value="1"> Sí</label>
+
+                <p><b>M. ¿Cuántos vasos de agua u otros líquidos toma al día? (agua, zumo, café, té, leche, vino, cerveza…) </b></p>
+                <label><input type="radio" name="M" value="0"> &lt;3</label>
+                <label><input type="radio" name="M" value="0.5"> 3–5</label>
+                <label><input type="radio" name="M" value="1"> &gt;5</label>
+
+                <p><b>N. Forma de alimentarse</b></p>
+                <label><input type="radio" name="N" value="0"> Necesita ayuda</label>
+                <label><input type="radio" name="N" value="1"> Se alimenta solo con dificultad</label>
+                <label><input type="radio" name="N" value="2"> Se alimenta solo sin dificultad</label>
+
+                <p><b>O. ¿Se considera el paciente que está bien nutrido? </b></p>
+                <label><input type="radio" name="O" value="0"> Mal nutrido grave</label>
+                <label><input type="radio" name="O" value="1"> No lo sabe o malnutrición moderada</label>
+                <label><input type="radio" name="O" value="2"> Sin problemas de nutrición</label>
+
+                <p><b>P.  En comparación con las personas de su edad, ¿Cómo encuentra el paciente su estado de salud? </b></p>
+                <label><input type="radio" name="P" value="0"> Peor</label>
+                <label><input type="radio" name="P" value="0.5"> No lo sabe</label>
+                <label><input type="radio" name="P" value="1"> Igual</label>
+                <label><input type="radio" name="P" value="2"> Mejor</label>
+
+                <p><b>Q. Circunferencia braquial (CB en cm)</b></p>
+                <label><input type="radio" name="Q" value="0"> &lt;21</label>
+                <label><input type="radio" name="Q" value="0.5"> 21–22</label>
+                <label><input type="radio" name="Q" value="1"> &gt;22</label>
+
+                <p><b>R. Circunferencia de la pantorrilla (CP en cm)</b></p>
+                <label><input type="radio" name="R" value="0"> &lt;31</label>
+                <label><input type="radio" name="R" value="1"> ≥31</label>
+
+                <button onclick="calcularFinal()">Calcular resultado final</button>
+            </fieldset>
+        </div>
+
+        <!-- PANTALLA DE RESULTADOS COMPLETOS -->
+        <div id="p4" class="pantalla">
+            <div id="resultadoFinal" class="resultado"></div>
+            <button onclick="enviarAGoogleSheets()">Finalizar y guardar</button>
+        </div>
+
+    </div>
+
+    <script>
+        function mostrar(id) {
+            document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('activa'));
+            document.getElementById(id).classList.add('activa');
+        }
+        function r(n) {
+            let x = document.querySelector(`input[name="${n}"]:checked`);
+            return x ? +x.value : 0;
+        }
+
+        let cribaje = 0;
+
+        function calcularCribaje() {
+            cribaje = 0;
+            ['A', 'B', 'C', 'D', 'E'].forEach(e => cribaje += r(e));
+            let imc = peso.value / ((altura.value / 100) ** 2);
+            cribaje += imc < 19 ? 0 : imc < 21 ? 1 : imc < 23 ? 2 : 3;
+
+            let estado = cribaje >= 12 ? 'Estado nutricional normal' : cribaje >= 8 ? 'Riesgo de malnutrición' : 'Malnutrición';
+
+            resCribaje.innerHTML = `
+<b>Paciente:</b> ${nombre.value} ${apellidos.value}<br>
+<b>IMC:</b> ${imc.toFixed(2)}<br>
+<b>Puntaje cribaje:</b> ${cribaje}<br>
+<b>Interpretación:</b> ${estado}`;
+            btnContinuar.style.display = cribaje <= 11 ? 'inline-block' : 'none';
+            mostrar('p2');
+        }
+
+        function calcularFinal() {
+            let total = cribaje;
+            ['G', 'H', 'I', 'J', 'L', 'M', 'N', 'O', 'P', 'Q', 'R'].forEach(e => total += r(e));
+            let k = (k1.checked ? 1 : 0) + (k2.checked ? 1 : 0) + (k3.checked ? 1 : 0);
+            total += k <= 1 ? 0 : k == 2 ? 0.5 : 1;
+
+            let estado = total >= 24 ? 'Estado nutricional normal' : total >= 17 ? 'Riesgo de malnutrición' : 'Malnutrición';
+
+            resultadoFinal.innerHTML = `
+<b>Paciente:</b> ${nombre.value} ${apellidos.value}<br>
+<b>Puntaje total:</b> ${total}<br>
+<b>Interpretación final:</b> ${estado}`;
+            mostrar('p4');
+        }
+
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwB_koJzPWsD5pAZ4J90SaBT1FeZYsPIVDMp-dDVThE3PVU3OuAREozAkf1rvefOsCr/exec";
+
+        function enviarAGoogleSheets() {
+            const data = {
+                apellidos: apellidos.value,
+                nombre: nombre.value,
+                sexo: sexo.value,
+                edad: edad.value,
+                peso: peso.value,
+                altura: altura.value,
+                imc: (peso.value / ((altura.value / 100) ** 2)).toFixed(2),
+                A: r('A'), B: r('B'), C: r('C'), D: r('D'), E: r('E'), F: 0,
+                G: r('G'), H: r('H'), I: r('I'), J: r('J'),
+                K: (k1.checked ? 1 : 0) + (k2.checked ? 1 : 0) + (k3.checked ? 1 : 0),
+                L: r('L'), M: r('M'), N: r('N'), O: r('O'), P: r('P'), Q: r('Q'), R: r('R'),
+                cribaje: cribaje,
+                total: resultadoFinal.innerText.match(/\d+(\.\d+)?/)[0],
+                interpretacion: resultadoFinal.innerText.includes('normal') ? 'Estado nutricional normal' : resultadoFinal.innerText.includes('Riesgo') ? 'Riesgo de malnutrición' : 'Malnutrición'
+            };
+
+            const formData = new FormData();
+            for (let k in data) { formData.append(k, data[k]); }
+
+            fetch(SCRIPT_URL, { method: 'POST', body: formData })
+                .then(() => { alert(" Datos guardados correctamente"); location.reload(); })
+                .catch(e => { alert(" Error al guardar"); console.error(e); });
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
